@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da34024e-8866-44d6-b244-0d30482c317a" name="Changes" comment="Performed clustering and clustering prediction">
+    <list default="true" id="da34024e-8866-44d6-b244-0d30482c317a" name="Changes" comment="Added histogram plots showing disorder prevalence in the most recent year">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
@@ -103,7 +103,31 @@
       <option name="project" value="LOCAL" />
       <updated>1714010913946</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Performed fitting and fitting prediction">
+      <option name="closed" value="true" />
+      <created>1714017506057</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1714017506057</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added docstrings">
+      <option name="closed" value="true" />
+      <created>1714017814890</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1714017814890</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added histogram plots showing disorder prevalence in the most recent year">
+      <option name="closed" value="true" />
+      <created>1714021368608</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1714021368608</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -123,6 +147,9 @@
     <MESSAGE value="- Previewed basic information on the dataset&#10;- Added a function to print the data of the dataframe in a table" />
     <MESSAGE value="Added a correlation matrix plot and a scatter plot for the different eating disorders" />
     <MESSAGE value="Performed clustering and clustering prediction" />
-    <option name="LAST_COMMIT_MESSAGE" value="Performed clustering and clustering prediction" />
+    <MESSAGE value="Performed fitting and fitting prediction" />
+    <MESSAGE value="Added docstrings" />
+    <MESSAGE value="Added histogram plots showing disorder prevalence in the most recent year" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added histogram plots showing disorder prevalence in the most recent year" />
   </component>
 </project>

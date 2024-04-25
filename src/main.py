@@ -239,16 +239,16 @@ def plot_scatter(df, x, y, labels, centers, scaler):
 
 
 # scatterplots with clustering
-# plot_scatter(df_variables, 'Schizophrenia disorders', 'Depressive disorders', labels_Km,
-#              kmeans.cluster_centers_, scaler)
-# plot_scatter(df_variables, 'Depressive disorders', 'Anxiety disorders', labels_Km,
-#              kmeans.cluster_centers_, scaler)
-# plot_scatter(df_variables, 'Anxiety disorders', 'Bipolar disorders', labels_Km,
-#              kmeans.cluster_centers_, scaler)
-# plot_scatter(df_variables, 'Bipolar disorders', 'Eating disorders', labels_Km,
-#              kmeans.cluster_centers_, scaler)
-# plot_scatter(df_variables, 'Eating disorders', 'Schizophrenia disorders', labels_Km,
-#              kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Schizophrenia disorders', 'Depressive disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Depressive disorders', 'Anxiety disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Anxiety disorders', 'Bipolar disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Bipolar disorders', 'Eating disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Eating disorders', 'Schizophrenia disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
 
 # Prediction
 
