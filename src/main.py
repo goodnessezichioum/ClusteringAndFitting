@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from sklearn.cluster import KMeans
-from sklearn.datasets import make_blobs
-from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
+from scipy.optimize import curve_fit
+from scipy.stats import t
 
 df = pd.read_csv('./res/1- mental-illnesses-prevalence.csv')
 
@@ -181,3 +181,94 @@ new_data_scaled = scaler.transform(df_variables.tail(5))
 # Making predictions on the new data
 predictions = kmeans.predict(new_data_scaled)
 print("Predictions: ", predictions)
+
+
+# Fitting
+
+def poly_model(x, *params):
+    """Polynomial model for curve fitting."""
+    return sum(p * (x ** i) for i, p in enumerate(params))
+
+
+def fit_polynomial(x, y, degree=4):
+    """Fit a polynomial to the data and return the fit parameters and standard errors."""
+    initial_guess = [1] * (degree + 1)
+    popt, pcov = curve_fit(poly_model, x, y, p0=initial_guess)
+    perr = np.sqrt(np.diag(pcov))  # Standard errors of the parameters
+    return popt, perr
+
+
+def calculate_confidence_interval3(X, popt, perr, confidence=0.95):
+    """Calculate the confidence interval for the polynomial fit."""
+    alpha = 1 - confidence
+    t_val = t.ppf(1 - alpha / 2, len(X) - len(popt))
+    x_fit = np.linspace(X.min(), X.max(), 200)
+    y_fit = poly_model(x_fit, *popt)
+
+    ci = t_val * perr * np.sqrt(1 / len(X) + (x_fit - np.mean(X)) ** 2 / np.sum((X - np.mean(X)) ** 2))
+    return x_fit, y_fit, ci
+
+
+def calculate_confidence_interval(X, popt, perr, confidence=0.95):
+    """Calculate the confidence interval for the polynomial fit."""
+    alpha = 1 - confidence
+    t_val = t.ppf(1 - alpha / 2, len(X) - len(popt))
+    x_fit = np.linspace(X.min(), X.max(), 200)
+    y_fit = poly_model(x_fit, *popt)
+
+    mean_sq_deviation = np.mean((X - np.mean(X)) ** 2)
+
+    # Calculate the confidence interval using the mean squared deviation
+    ci = t_val * perr[-1] * np.sqrt(1 / len(X) + (x_fit - np.mean(X)) ** 2 / mean_sq_deviation)
+    return x_fit, y_fit, ci
+
+
+def plot_fit_with_confidence(X, y, x_fit, y_fit, ci, degree=4, confidence=0.95):
+    """Plot the data, the polynomial fit, and the confidence interval."""
+    plt.figure(figsize=(10, 8))
+    plt.scatter(X, y, label='Data', color='blue', alpha=0.5)
+    plt.plot(x_fit, y_fit, color='red', label=f'Polynomial Degree {degree} Fit')
+    plt.fill_between(x_fit, y_fit - ci, y_fit + ci, color='red', alpha=0.2,
+                     label=f'{confidence * 100}% Confidence Interval')
+    plt.xlabel('Anxiety disorders')
+    plt.ylabel('Depressive disorders')
+    plt.title('Polynomial Curve Fit with Confidence Interval')
+    plt.legend()
+    plt.show()
+
+
+# Usage:
+# Extract the columns for fitting
+x = df_variables['Anxiety disorders'].values
+y = df_variables['Depressive disorders'].values
+
+# Check if there are any NaN values and remove them
+nan_mask = ~np.isnan(x) & ~np.isnan(y)
+x = x[nan_mask]
+y = y[nan_mask]
+
+degree = 4
+
+# Fit the polynomial and get the parameters and errors
+popt, perr = fit_polynomial(x, y, degree)
+
+# Calculate the confidence interval
+x_fit, y_fit, ci = calculate_confidence_interval(x, popt, perr)
+
+# Plot the results
+plot_fit_with_confidence(x, y, x_fit, y_fit, ci, degree)
+
+
+def make_predictions(new_x, fitted_params):
+    """Make predictions using the fitted polynomial model."""
+    predicted_y = poly_model(new_x, *fitted_params)
+    return predicted_y
+
+
+# Predict the next 5 'Depressive disorders' from 'Anxiety disorders'
+# Assume the last 5 entries are "new" data
+new_x_values = np.array(df_variables["Anxiety disorders"].tail(5))  # Replace with actual new values
+
+# Making predictions on the new data for 'Depressive disorders'
+predictions = make_predictions(new_x_values, popt)
+print("Fitting Predictions for Depressive Disorder:", predictions)

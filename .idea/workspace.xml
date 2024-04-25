@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="da34024e-8866-44d6-b244-0d30482c317a" name="Changes" comment="- Previewed basic information on the dataset&#10;- Added a function to print the data of the dataframe in a table">
+    <list default="true" id="da34024e-8866-44d6-b244-0d30482c317a" name="Changes" comment="Performed clustering and clustering prediction">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
@@ -35,11 +35,18 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Python.main.executor": "Run",
+    "Python.main2.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/goodn/ads/ClusteringAndFitting/src"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\goodn\ads\ClusteringAndFitting\src" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -80,7 +87,23 @@
       <option name="project" value="LOCAL" />
       <updated>1714003972650</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added a correlation matrix plot and a scatter plot for the different eating disorders">
+      <option name="closed" value="true" />
+      <created>1714004635166</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1714004635166</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Performed clustering and clustering prediction">
+      <option name="closed" value="true" />
+      <created>1714010913946</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1714010913946</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -98,6 +121,8 @@
     <MESSAGE value="initialize repository" />
     <MESSAGE value="- imported datasets&#10;- added library imports and read one of the dataset" />
     <MESSAGE value="- Previewed basic information on the dataset&#10;- Added a function to print the data of the dataframe in a table" />
-    <option name="LAST_COMMIT_MESSAGE" value="- Previewed basic information on the dataset&#10;- Added a function to print the data of the dataframe in a table" />
+    <MESSAGE value="Added a correlation matrix plot and a scatter plot for the different eating disorders" />
+    <MESSAGE value="Performed clustering and clustering prediction" />
+    <option name="LAST_COMMIT_MESSAGE" value="Performed clustering and clustering prediction" />
   </component>
 </project>
