@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from sklearn.cluster import KMeans
+from sklearn.datasets import make_blobs
+from sklearn.metrics import silhouette_score
 
 df = pd.read_csv('./res/1- mental-illnesses-prevalence.csv')
 
@@ -48,5 +50,39 @@ df_variables = df[["Schizophrenia disorders", "Depressive disorders", "Anxiety d
                    "Eating disorders"]]
 
 
-print("Skewness", df_variables.skew)
-print("Kurtosis", df_variables.kurtosis)
+print("Skewness", df_variables.skew())
+print("Kurtosis", df_variables.kurtosis())
+
+
+# create scatterplots
+def plot_scatter_plots(df, column_pairs):
+    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(11, 5))
+    axes = axes.flatten()
+    titles = ['Schizophrenia - Eating', 'Depressive - Eating', 'Anxiety - Eating', 'Bipolar - Eating']
+    for ax, (col_x, col_y), title in zip(axes, column_pairs, titles):
+        ax.set_title(title)
+        sns.scatterplot(x=col_x, y=col_y, data=df, ax=ax)
+    plt.show()
+
+
+column_pairs = [
+    ("Schizophrenia disorders", "Eating disorders"),
+    ("Depressive disorders", "Eating disorders"),
+    ("Anxiety disorders", "Eating disorders"),
+    ("Bipolar disorders", "Eating disorders")
+]
+
+
+plot_scatter_plots(df_variables, column_pairs)
+
+# plot correlation matrix
+def plot_correlation_matrix(df):
+    corr = df.corr()
+    f, ax = plt.subplots(figsize=(11, 9))
+    cmap = sns.diverging_palette(230, 20, as_cmap=True)
+    sns.heatmap(corr, cmap=cmap, vmax=.3, center=0, annot=True, fmt=".2f", linewidths=.5)
+    plt.show()
+
+
+plot_correlation_matrix(df_variables)
+
