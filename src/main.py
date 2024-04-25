@@ -14,6 +14,17 @@ print(df.describe())
 
 
 def dataframe_info_as_table(df):
+    """
+    Create a summary table of information about a dataframe including the variable names,
+    data types, total count of values, count of unique values, and number of missing values
+    for each column.
+
+    Parameters:
+    df (DataFrame): The dataframe to summarize.
+
+    Returns:
+    DataFrame: A new dataframe containing the summary information.
+    """
     variables = []
     dtypes = []
     count = []
@@ -57,6 +68,13 @@ print("Kurtosis", df_variables.kurtosis())
 
 # create scatterplots
 def plot_sub(df, column_pairs):
+    """
+    Plot scatterplots for specified pairs of columns in a 2x2 subplot layout.
+
+    Parameters:
+    df (DataFrame): The dataframe containing the columns to plot.
+    column_pairs (list of tuple): Pairs of column names to be plotted against each other.
+    """
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(11, 5))
     axes = axes.flatten()
     titles = ['Schizophrenia - Eating', 'Depressive - Eating', 'Anxiety - Eating', 'Bipolar - Eating']
@@ -78,6 +96,13 @@ column_pairs = [
 
 # plot correlation matrix
 def plot_correlation_matrix(df, title):
+    """
+    Generate and display a heatmap of the correlation matrix for the specified dataframe.
+
+    Parameters:
+    df (DataFrame): The dataframe whose correlations are to be plotted.
+    title (str): The title of the plot.
+    """
     corr = df.corr()
     f, ax = plt.subplots(figsize=(11, 9))
     cmap = sns.diverging_palette(230, 20, as_cmap=True)
@@ -106,6 +131,14 @@ kmeans_kw = {
 
 # Checking best cluster numbers with the elbow method
 def plot_elbow_method(df, iner, title):
+    """
+    Plot the elbow method graph for determining the optimal number of clusters in k-means clustering.
+
+    Parameters:
+    df (array): The scaled data used in k-means clustering.
+    iner (list): List of inertia values corresponding to different numbers of clusters.
+    title (str): Title of the plot.
+    """
     plt.figure(figsize=(10, 5), dpi=200)
     plt.plot(range(1, 10), iner, color='purple')
     plt.xticks(range(1, 10))
@@ -129,6 +162,15 @@ kmeans = KMeans(n_clusters=3, init='random', n_init=10, max_iter=300, random_sta
 
 
 def perform_clustering(data):
+    """
+    Perform k-means clustering on the provided data using a pre-initialized k-means model.
+
+    Parameters:
+    data (array): The dataset to cluster.
+
+    Returns:
+    array: Array of cluster labels for each data point.
+    """
     kmeans.fit(data)
     return kmeans.labels_
 
