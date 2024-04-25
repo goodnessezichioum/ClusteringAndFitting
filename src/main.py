@@ -9,6 +9,7 @@ from scipy.stats import t
 
 df = pd.read_csv('./res/1- mental-illnesses-prevalence.csv')
 
+print(df.columns)
 print(df.head())
 print(df.describe())
 
@@ -64,6 +65,40 @@ df_variables = df[["Schizophrenia disorders", "Depressive disorders", "Anxiety d
 
 print("Skewness", df_variables.skew())
 print("Kurtosis", df_variables.kurtosis())
+
+
+def plot_hist(df, x_label, y_label, title):
+    """
+    Plot a histogram for the specified data column in the dataframe.
+
+    Parameters:
+    df (DataFrame or Series): The data to be plotted, typically a single column of a DataFrame.
+    x_label (str): Label for the x-axis of the histogram.
+    y_label (str): Label for the y-axis of the histogram.
+    title (str): Title of the histogram.
+
+    Returns:
+    None: This function does not return any value; it only displays the histogram.
+    """
+    plt.figure(figsize=(10, 6))
+    plt.hist(df, bins=20, color='skyblue')
+    plt.title(title)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.grid(True)
+    plt.show()
+
+
+# Identifying the most recent year in the dataset for depressive disorders
+most_recent_year = df['Year'].max()
+
+disorders = ['Eating disorders', 'Bipolar disorders', 'Anxiety disorders', 'Schizophrenia disorders',
+             'Depressive disorders']
+for disorder in disorders:
+    # Extracting data for the most recent year
+    depressive_recent = df[df['Year'] == most_recent_year][disorder]
+    title = f'Distribution of {disorder} Prevalence in the Most Recent Year'
+    plot_hist(depressive_recent, 'Prevalence (%)', 'Number of Countries', title)
 
 
 # create scatterplots
@@ -204,16 +239,16 @@ def plot_scatter(df, x, y, labels, centers, scaler):
 
 
 # scatterplots with clustering
-plot_scatter(df_variables, 'Schizophrenia disorders', 'Depressive disorders', labels_Km,
-             kmeans.cluster_centers_, scaler)
-plot_scatter(df_variables, 'Depressive disorders', 'Anxiety disorders', labels_Km,
-             kmeans.cluster_centers_, scaler)
-plot_scatter(df_variables, 'Anxiety disorders', 'Bipolar disorders', labels_Km,
-             kmeans.cluster_centers_, scaler)
-plot_scatter(df_variables, 'Bipolar disorders', 'Eating disorders', labels_Km,
-             kmeans.cluster_centers_, scaler)
-plot_scatter(df_variables, 'Eating disorders', 'Schizophrenia disorders', labels_Km,
-             kmeans.cluster_centers_, scaler)
+# plot_scatter(df_variables, 'Schizophrenia disorders', 'Depressive disorders', labels_Km,
+#              kmeans.cluster_centers_, scaler)
+# plot_scatter(df_variables, 'Depressive disorders', 'Anxiety disorders', labels_Km,
+#              kmeans.cluster_centers_, scaler)
+# plot_scatter(df_variables, 'Anxiety disorders', 'Bipolar disorders', labels_Km,
+#              kmeans.cluster_centers_, scaler)
+# plot_scatter(df_variables, 'Bipolar disorders', 'Eating disorders', labels_Km,
+#              kmeans.cluster_centers_, scaler)
+# plot_scatter(df_variables, 'Eating disorders', 'Schizophrenia disorders', labels_Km,
+#              kmeans.cluster_centers_, scaler)
 
 # Prediction
 
