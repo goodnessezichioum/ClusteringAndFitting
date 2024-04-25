@@ -5,11 +5,13 @@ import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_blobs
 from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import StandardScaler
 
 df = pd.read_csv('./res/1- mental-illnesses-prevalence.csv')
 
 print(df.head())
 print(df.describe())
+
 
 def dataframe_info_as_table(df):
     variables = []
@@ -49,13 +51,12 @@ df = df.rename(columns={
 df_variables = df[["Schizophrenia disorders", "Depressive disorders", "Anxiety disorders", "Bipolar disorders",
                    "Eating disorders"]]
 
-
 print("Skewness", df_variables.skew())
 print("Kurtosis", df_variables.kurtosis())
 
 
 # create scatterplots
-def plot_scatter_plots(df, column_pairs):
+def plot_sub(df, column_pairs):
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(11, 5))
     axes = axes.flatten()
     titles = ['Schizophrenia - Eating', 'Depressive - Eating', 'Anxiety - Eating', 'Bipolar - Eating']
@@ -73,16 +74,110 @@ column_pairs = [
 ]
 
 
-plot_scatter_plots(df_variables, column_pairs)
+# plot_sub(df_variables, column_pairs)
 
 # plot correlation matrix
-def plot_correlation_matrix(df):
+def plot_correlation_matrix(df, title):
     corr = df.corr()
     f, ax = plt.subplots(figsize=(11, 9))
     cmap = sns.diverging_palette(230, 20, as_cmap=True)
     sns.heatmap(corr, cmap=cmap, vmax=.3, center=0, annot=True, fmt=".2f", linewidths=.5)
+    plt.title(title)
     plt.show()
 
 
-plot_correlation_matrix(df_variables)
+plot_correlation_matrix(df_variables, "Correlation Matrix")
 
+# Standardizing the data
+scaler = StandardScaler()
+df_scaled = scaler.fit_transform(df_variables)
+
+# setting up the clusterer
+kmeans = KMeans(init="random", n_clusters=3, n_init=10, max_iter=300, random_state=42)
+cluster_km = kmeans.fit(df_scaled)
+
+kmeans_kw = {
+    "init": "random",
+    "n_init": 10,
+    "max_iter": 300,
+    "random_state": 42,
+}
+
+
+# Checking best cluster numbers with the elbow method
+def plot_elbow_method(df, iner, title):
+    plt.figure(figsize=(10, 5), dpi=200)
+    plt.plot(range(1, 10), iner, color='purple')
+    plt.xticks(range(1, 10))
+    plt.xlabel("Number of Clusters")
+    plt.ylabel("Iner")
+    plt.title(title)
+    plt.axvline(x=3, color='b', label='axvline - full height', linestyle="dashed")
+    plt.show()
+    return
+
+
+iner = []
+for k in range(1, 10):
+    kmeans = KMeans(n_clusters=k, **kmeans_kw)
+    kmeans.fit(df_scaled)
+    iner.append(kmeans.inertia_)
+
+plot_elbow_method(df_scaled, iner, "Elbow plot")
+
+kmeans = KMeans(n_clusters=3, init='random', n_init=10, max_iter=300, random_state=42)
+
+
+def perform_clustering(data):
+    kmeans.fit(data)
+    return kmeans.labels_
+
+
+labels_Km = perform_clustering(df_scaled)
+
+
+def plot_scatter(df, x, y, labels, centers, scaler):
+    """Plot scatter graph with clustering and labeled cluster centers."""
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(x=df[x], y=df[y], hue=labels, palette='viridis', s=100, alpha=0.6)
+
+    # Transform cluster centers back to original scale
+    centers_original_scale = scaler.inverse_transform(centers)
+
+    # Extract x and y coordinates of the centers
+    x_centers = centers_original_scale[:, df.columns.get_loc(x)]
+    y_centers = centers_original_scale[:, df.columns.get_loc(y)]
+
+    # Plot the centers and create a legend entry for them
+    for i, (cx, cy) in enumerate(zip(x_centers, y_centers)):
+        plt.scatter(cx, cy, s=300, c='black', marker='X')  # Large black crosses for centers
+        plt.text(cx, cy, f'Center {i}', color='black', fontsize=12, weight='bold')
+        plt.scatter([], [], c='black', marker='X', label=f'Center {i}')
+
+    plt.title(f'Scatter Plot of {x} vs {y} with Clustering and Centers')
+    plt.xlabel(x)
+    plt.ylabel(y)
+    plt.legend(title='With clustering')
+    plt.show()
+
+
+# scatterplots with clustering
+plot_scatter(df_variables, 'Schizophrenia disorders', 'Depressive disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Depressive disorders', 'Anxiety disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Anxiety disorders', 'Bipolar disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Bipolar disorders', 'Eating disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+plot_scatter(df_variables, 'Eating disorders', 'Schizophrenia disorders', labels_Km,
+             kmeans.cluster_centers_, scaler)
+
+# Prediction
+
+# Assume the last 5 entries are "new" data
+new_data_scaled = scaler.transform(df_variables.tail(5))
+
+# Making predictions on the new data
+predictions = kmeans.predict(new_data_scaled)
+print("Predictions: ", predictions)
